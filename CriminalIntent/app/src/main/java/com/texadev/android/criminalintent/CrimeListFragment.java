@@ -76,7 +76,9 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v){
             // Send UUID along to intent
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            //Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            // New hotness: use pager style instead
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
     }
