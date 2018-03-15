@@ -1,4 +1,4 @@
-package com.texadev.android.criminalintent;
+package com.texadev.android.beatbox;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
