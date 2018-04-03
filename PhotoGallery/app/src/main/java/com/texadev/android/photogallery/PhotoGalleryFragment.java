@@ -1,5 +1,6 @@
 package com.texadev.android.photogallery;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -48,7 +49,11 @@ public class PhotoGalleryFragment extends Fragment {
         super.onCreate(savedInstance);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+        updateItems();
 //        new FetchItemsTask().execute();
+
+        Intent i = PollService.newIntent(getActivity());
+        getActivity().startService(i);
 
         Handler responseHandler = new Handler();
         mThumbnailDownloader = new ThumbnailDownloader<>(responseHandler);
