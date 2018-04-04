@@ -18,8 +18,9 @@ import java.util.List;
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
-
-    private static final long POLL_INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES; //1000 * 60; // 60 secs
+    private static final long POLL_INTERVAL = 1000 * 60; // 60 secs  or AlarmManager.INTERVAL_FIFTEEN_MINUTES; //1000 * 60; // 60 secs
+    public static final String ACTION_SHOW_NOTIFICATION = "com.texadev.android.photogallery.SHOW_NOTIFICATION";
+    public static final String PERM_PRIVATE ="com.texadev.android.photogallery.PRIVATE";
 
     public static Intent newIntent(Context context) {
         return new Intent(context, PollService.class);
@@ -37,6 +38,8 @@ public class PollService extends IntentService {
             alarmManager.cancel(pi);
             pi.cancel();
         }
+
+        QueryPreferences.setAlarmOn(context, isOn);
     }
 
     public static boolean isServiceAlarmOn(Context context) {
@@ -91,6 +94,8 @@ public class PollService extends IntentService {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(0, notification);
+
+        sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION), PERM_PRIVATE);
     }
 
     private boolean isNetworkAvailableAndConnected() {

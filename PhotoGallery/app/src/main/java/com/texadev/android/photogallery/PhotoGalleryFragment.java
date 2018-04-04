@@ -33,7 +33,7 @@ import java.util.List;
  * Created by Bill on 3/23/2018.
  */
 
-public class PhotoGalleryFragment extends Fragment {
+public class PhotoGalleryFragment extends VisibleFragment {
     private static final String TAG="PhotoGalleryFragment";
     private List<GalleryItem> mItems = new ArrayList<>();
     private ThumbnailDownloader<PhotoHolder> mThumbnailDownloader;
