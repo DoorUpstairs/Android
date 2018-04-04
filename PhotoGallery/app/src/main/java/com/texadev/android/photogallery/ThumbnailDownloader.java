@@ -1,5 +1,6 @@
 package com.texadev.android.photogallery;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -34,6 +35,7 @@ public class ThumbnailDownloader<T> extends HandlerThread {
         mResponseHandler = responseHandler;
     }
 
+    @SuppressLint("HandlerLeak") // Need to review how to better handle the Handler!
     @Override
     protected void onLooperPrepared() {
         mRequestHandler = new Handler() {
