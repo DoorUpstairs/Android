@@ -1,5 +1,6 @@
 package com.texadev.android.photogallery;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
@@ -18,9 +19,11 @@ import java.util.List;
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
-    private static final long POLL_INTERVAL = 1000 * 60; // 60 secs  or AlarmManager.INTERVAL_FIFTEEN_MINUTES; //1000 * 60; // 60 secs
+    private static final int POLL_INTERVAL = 1000 * 60; // 60 secs  or AlarmManager.INTERVAL_FIFTEEN_MINUTES; //1000 * 60; // 60 secs
     public static final String ACTION_SHOW_NOTIFICATION = "com.texadev.android.photogallery.SHOW_NOTIFICATION";
     public static final String PERM_PRIVATE ="com.texadev.android.photogallery.PRIVATE";
+    public static final String REQUEST_CODE = "REQUEST_CODE";
+    public static final String NOTIFICATION = "NOTIFICATION";
 
     public static Intent newIntent(Context context) {
         return new Intent(context, PollService.class);
@@ -77,13 +80,12 @@ public class PollService extends IntentService {
             Log.i(TAG, "Got an old result: " + resultId);
         } else {
             Log.i(TAG, "Got a new result: " + resultId);
-        }
 
-        Resources resources = getResources();
-        Intent i = PhotoGalleryActivity.newIntent(this);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+            Resources resources = getResources();
+             Intent i = PhotoGalleryActivity.newIntent(this);
+            PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
-        Notification notification = new Notification.Builder(this)
+            Notification notification = new Notification.Builder(this)
                 .setTicker(resources.getString(R.string.new_pictures_title))
                 .setSmallIcon(android.R.drawable.ic_menu_report_image)
                 .setContentTitle(resources.getString(R.string.new_pictures_title))
@@ -92,12 +94,20 @@ public class PollService extends IntentService {
                 .setAutoCancel(true)
                 .build();
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(0, notification);
-
-        sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION), PERM_PRIVATE);
+//          NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//          notificationManager.notify(0, notification);
+//
+//          sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION), PERM_PRIVATE);
+            showBackgroundNotification(0, notification);
+        }
+        QueryPreferences.setLastResultId(this, resultId);
     }
-
+    private void showBackgroundNotification(int requestCode, Notification notification){
+        Intent i = new Intent(ACTION_SHOW_NOTIFICATION);
+        i.putExtra(REQUEST_CODE, requestCode);
+        i.putExtra(NOTIFICATION, notification);
+        sendOrderedBroadcast(i, PERM_PRIVATE, null, null, Activity.RESULT_OK, null, null);
+    }
     private boolean isNetworkAvailableAndConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 
