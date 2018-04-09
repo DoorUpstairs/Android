@@ -8,6 +8,6 @@ public class DragAndDrawActivity extends SingleFragmentActivity {
 
     @Override
     public Fragment createFragment() {
-        return DragAndDropFragment.newInstance();
+        return DragAndDrawFragment.newInstance();
     }
 }
