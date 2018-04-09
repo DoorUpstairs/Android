@@ -185,7 +185,12 @@ public class PhotoGalleryFragment extends VisibleFragment {
 
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(Intent.ACTION_VIEW, mGalleryItem.getPhotoPageUri());
+            // use this to fire external web browser
+//            Intent i = new Intent(Intent.ACTION_VIEW, mGalleryItem.getPhotoPageUri());
+
+            // use this to use web browser internally
+            Intent i = PhotoPageActivity
+                    .newIntent(getActivity(), mGalleryItem.getPhotoPageUri());
             startActivity(i);
         }
     }
